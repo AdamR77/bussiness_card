@@ -1,41 +1,38 @@
 from faker import Faker
 fake = Faker()
 
-name = fake.name()
-address= fake.address()
-phone = fake.phone_number()
-company = fake.company()
-position = fake.job()
-email = fake.email()
 
-class BussinessCard:
-    def __init__ (self, name, address, phone, company, job, email):
+class BaseContact:
+    def __init__ (self, name, address, phone, email):
         self.name = name
         self.address = address
         self.phone = phone
-        self.company = company
-        self.job = job
         self.email = email
-    def __str__ (self):
-        return f'{self.name} {self.address}  {self.company} {self.phone} {self.job}  {self.email}'
+        
+class BusinessContact(BaseContact):
+    def __init__(self, job, company, business_phone, business_email, *args, **kwargs):
+        super().__init__(*args,**kwargs)
+        self.job = job
+        self.company = company
+        self.business_phone = business_phone
+        self.business_email = business_email 
+       
+def create_contact():
+    base_contact = BaseContact(name = fake.name(), address = fake.address(), phone = fake.phone_number(), email = fake.email())
+    business_contact = BusinessContact(name = base_contact.name, phone = base_contact.phone, email = base_contact.email, job = fake.job(),
+    company = fake.company(), business_phone = fake.phone_number(), address = base_contact.address, business_email = fake.email())    
+    print(f'wybieram numer prywatny: {base_contact.phone} i kontaktuję się z {base_contact.name} ')
+    print(f'wybieram numer służbowy: {business_contact.business_phone} i kontaktuję się {business_contact.name} ')
+    print('długość pola: imię + nazwisko', len(base_contact.name))
+create_contact()
 
-for x in range(6):
-    name = fake.name()
-    address = fake.address()
-    company = fake.company()
-    phone = fake.phone_number()
-    job = fake.job()
-    email = fake.email()
-    person = BussinessCard(name, address, phone, company, job, email)
-    print(person)
 
 
-def __str__ (self):
-    return f' kontaktuję się z {name} {company} {job} {email}'
-contact = BussinessCard(name = name, address=address, phone = phone, email = email, company = company, job = job)
 
-print(contact)
-print(BussinessCard)
+
+
+
+
 
 
 
